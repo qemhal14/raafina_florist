@@ -102,18 +102,54 @@ def menu():
 def update_existing_flower(input_name):
     for flower in table_flower:
         if input_name == flower[0].lower():
-            stock_update = int(user_inp_data("Enter stock: ", [int]))
-            price_update = int(user_inp_data("Enter price: ", [int]))
-            flower[2] += stock_update
-            flower[3] = price_update
-            savefile()
-            print(f"Flower/leaves {input_name.title()} updated!")
+            while True:
+                try:
+                    stock_update = int(input("Enter stock: "))
+                    if stock_update < 0:
+                        error_message()
+                        continue
+                    break
+                except ValueError:
+                    error_message()
+                    continue
+            while True:
+                try:
+                    price_update = int(input("Enter price: "))
+                    if price_update < 0:
+                        error_message()
+                        continue
+                    break
+                except ValueError:
+                    error_message()
+                    continue
+        flower[2] += stock_update
+        flower[3] = price_update
+        savefile()
+        print(f"Flower/leaves {input_name.title()} updated!")
 
 # Function to add new item           
 def new_flower(input_name):
-    input_cat = user_inp("Enter category :", ["flower", "leaves"]) # <---BUGG
-    input_stock = int(user_inp_data("Enter stock :", [int]))
-    input_price = int(user_inp_data("Enter price :", [int]))
+    input_cat = user_inp("Enter category :", ["flower", "leaves"])
+    while True:
+        try:
+            input_stock = int(input("Enter stock :"))
+            if input_stock < 0:
+                error_message()
+                continue
+            break
+        except ValueError:
+            error_message()
+            continue
+    while True:    
+        try:
+            input_price = int(input("Enter price :"))
+            if input_price < 0:
+                error_message()
+                continue
+            break
+        except ValueError:
+            error_message()
+            continue
     invent_update = [input_name.title(), input_cat.capitalize(), input_stock, input_price]
     table_flower.append(invent_update)
     savefile()
@@ -163,8 +199,7 @@ def delete_flower():
             while True:
                 table()
                 try:
-                    input_del = input("Enter flower/leaves index you want to delete :")
-                    input_del = int(input_del)
+                    input_del = int(input("Enter flower/leaves index you want to delete :"))
                     if input_del > total_invent() or input_del <= 0:
                         error_message()
                         continue
@@ -192,8 +227,7 @@ def product_choice():
     2. Bloom Box
     3. Vase Arrangement
     4. Just Flower Please
-    '''
-    )
+    ''')
 
 # Function to get product that user choice
 def get_product_name():
@@ -228,8 +262,7 @@ def delivery_location():
     3. Depok
     4. Tanggerang
     5. Bekasi
-    '''
-    )
+    ''')
 
 # Function to get the name of the delivery selected
 def get_delivery_name():
@@ -316,23 +349,36 @@ def order():
     cart_head = [["Item", "Quantity", "Price"]]
     while True:
         table()
-        # Buggg when flower already in a cart it will add another with the same name
         try:
-            input_buy = int(input("Enter flower/leaves index you want to order: "))
-            if input_buy < 0 or input_buy > total_invent():
-                error_message()
-                continue
-            item_ordered = table_flower[input_buy]
-            flower = item_ordered[0]
-            stock = item_ordered[2]
-            price = item_ordered[3]
+            continue_inp = user_inp("Continue order a flower? (yes/no) :", ["yes", "no"])
+            if continue_inp == "yes":
+                input_buy = int(input("Enter flower/leaves index you want to order: "))
+                if input_buy < 0 or input_buy > total_invent():
+                    error_message()
+                    continue
+                item_ordered = table_flower[input_buy]
+                flower = item_ordered[0]
+                stock = item_ordered[2]
+                price = item_ordered[3]
+            elif continue_inp == "no":
+                break
         except ValueError:
             error_message()
             continue
+
+        existing_index = None
+        for i, item in enumerate(cart_head):
+            if item[0] == flower:
+                existing_index = i
+                break
+
         while True:
             try:
                 input_qty = int(input("Enter quantity: "))
-                if input_qty <= stock:
+                if input_qty <= stock and existing_index is not None:
+                    cart_head[existing_index][1] += input_qty
+                    break
+                elif input_qty <= stock:
                     break
                 print(f"{flower} stock is not enough! Stock remaining: {stock}.")
             except ValueError:
@@ -340,7 +386,8 @@ def order():
                 continue
         subtotal_price = input_qty * price
         cart = [flower, input_qty, subtotal_price]
-        cart_head.append(cart)
+        if existing_index is None:
+            cart_head.append(cart)
         print(tabulate(cart_head))
 
         add_another = user_inp("Do you like to add another flower/leaves? (yes/no): ", ["yes", "no"]).lower()
