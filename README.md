@@ -27,7 +27,12 @@ This python program is a flower shop application, allowing user (owner or custom
    ```
    git clone https://github.com/qemhal14/raafina_florist_purwadhika_project-.git
    ```
-3. Run the main file raafina_bunga.py
+2. Run with python version 3.12.2
+3. instal tabulate
+   ```
+   pip install tabulate
+   ```
+4. Run the main file raafina_bunga.py
 
 ## Contact
 
