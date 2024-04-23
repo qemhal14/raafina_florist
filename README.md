@@ -3,20 +3,32 @@ This python program is a flower shop application, allowing user (owner or custom
 
 ## Main CRUD Features
 
-1. Create
+1. Create:
    User can create a new item to put in the inventory, either a flower or leaves.
-2. Read
+2. Read:
    User can read the database and see the price list.
-3. Update
+3. Update:
    User can update the database in the update stock features.
-4. Delete
+4. Delete:
    User can delete item (flower or leaves) from the database.
 
 ## Additional Features
 
-1. Sort
+1. Sort:
    User can sort the price list by category or by price ascending.
-2. Login feature
+2. Login feature:
    User input role before entering the application. If role is owner it'll ask for password.
-3. Promo feature
+3. Promo feature:
    If customer order is above a certain amount, they will get a cashback voucher that can be apply in the checkout to get a 10% cashback.
+
+## How to run the program
+
+1. Clone the program
+   git clone https://github.com/qemhal14/raafina_florist-.git
+2. Run the main file raafina_bunga.py
+
+## Contact
+
+my LinkedIn https://www.linkedin.com/in/qemhal-haritskhayru/
+
+   
