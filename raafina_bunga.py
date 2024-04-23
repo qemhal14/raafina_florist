@@ -217,6 +217,7 @@ def delete_flower():
             
         elif confirm_inp == "no" or choice_3 == "no":
             print("Delete action canceled!")
+            break
 
 # Choices of product
 def product_choice():
