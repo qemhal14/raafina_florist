@@ -24,8 +24,10 @@ This python program is a flower shop application, allowing user (owner or custom
 ## How to run the program
 
 1. Clone the program
+   ```
    git clone https://github.com/qemhal14/raafina_florist-.git
-2. Run the main file raafina_bunga.py
+   ```
+3. Run the main file raafina_bunga.py
 
 ## Contact
 
