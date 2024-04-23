@@ -351,18 +351,14 @@ def order():
     while True:
         table()
         try:
-            continue_inp = user_inp("Continue order a flower? (yes/no) :", ["yes", "no"])
-            if continue_inp == "yes":
-                input_buy = int(input("Enter flower/leaves index you want to order: "))
-                if input_buy < 0 or input_buy > total_invent():
-                    error_message()
-                    continue
-                item_ordered = table_flower[input_buy]
-                flower = item_ordered[0]
-                stock = item_ordered[2]
-                price = item_ordered[3]
-            elif continue_inp == "no":
-                break
+            input_buy = int(input("Enter flower/leaves index you want to order: "))
+            if input_buy < 0 or input_buy > total_invent():
+                error_message()
+                continue
+            item_ordered = table_flower[input_buy]
+            flower = item_ordered[0]
+            stock = item_ordered[2]
+            price = item_ordered[3]
         except ValueError:
             error_message()
             continue
