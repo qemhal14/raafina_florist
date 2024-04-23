@@ -298,13 +298,13 @@ def cashback_message():
     print("Apply 'GET10CB' below for the Cashback!")
 
 # Function to calculate total amount in the cart
-def calculate_total_price(cart_head):
-    total_price = sum(row[2] for row in cart_head[1:])
+def calculate_total_price(cart):
+    total_price = sum(row[2] for row in cart[1:])
     return total_price
 
 # Function to display the cart and the sum of the total price 
-def display_order_summary(cart_head, total_price):
-    print(tabulate(cart_head))
+def display_order_summary(cart, total_price):
+    print(tabulate(cart))
     print("Here is the sum of your order:", total_price)
 
 # Function for cashback voucher
@@ -335,8 +335,8 @@ def get_payment(total_price):
             error_message()
 
 # Function to update the stock in database after ordering
-def update_stock(cart_head):
-    for item in cart_head[1:]:
+def update_stock(cart):
+    for item in cart[1:]:
         flower_name = item[0]
         for i, row in enumerate(table_flower):
             if row[0] == flower_name:
@@ -347,7 +347,7 @@ def update_stock(cart_head):
 # main program in order options
 def order():
     total_invent()
-    cart_head = [["Item", "Quantity", "Price"]]
+    cart = [["Item", "Quantity", "Price"]]
     while True:
         table()
         try:
@@ -368,7 +368,7 @@ def order():
             continue
 
         existing_index = None
-        for i, item in enumerate(cart_head):
+        for i, item in enumerate(cart):
             if item[0] == flower:
                 existing_index = i
                 break
@@ -377,7 +377,7 @@ def order():
             try:
                 input_qty = int(input("Enter quantity: "))
                 if input_qty <= stock and existing_index is not None:
-                    cart_head[existing_index][1] += input_qty
+                    cart[existing_index][1] += input_qty
                     break
                 elif input_qty <= stock:
                     break
@@ -386,31 +386,31 @@ def order():
                 error_message()
                 continue
         subtotal_price = input_qty * price
-        cart = [flower, input_qty, subtotal_price]
+        cart_update = [flower, input_qty, subtotal_price]
         if existing_index is None:
-            cart_head.append(cart)
-        print(tabulate(cart_head))
+            cart.append(cart_update)
+        print(tabulate(cart))
 
         add_another = user_inp("Do you like to add another flower/leaves? (yes/no): ", ["yes", "no"]).lower()
         if add_another == "no":
             product_choice()
             product_name = get_product_name()
             prod_price = product_price(product_name)
-            new_cart = [product_name, 1, prod_price]  
-            cart_head.append(new_cart)
-            print(tabulate(cart_head))
+            product_cart = [product_name, 1, prod_price]  
+            cart.append(product_cart)
+            print(tabulate(cart))
 
             delivery_location()
             delivery_name = get_delivery_name()
             deli_price = delivery_price(delivery_name)
             delivery_cart = [delivery_name, 1, deli_price] 
-            cart_head.append(delivery_cart)
+            cart.append(delivery_cart)
 
-            total_price = calculate_total_price(cart_head)
-            display_order_summary(cart_head, total_price)
+            total_price = calculate_total_price(cart)
+            display_order_summary(cart, total_price)
             total_price = process_order(total_price)
             get_payment(total_price)
-            update_stock(cart_head)
+            update_stock(cart)
             break
 
 # Welcome function depending on role
