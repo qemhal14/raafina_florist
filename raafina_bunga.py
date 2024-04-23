@@ -122,10 +122,10 @@ def update_existing_flower(input_name):
                 except ValueError:
                     error_message()
                     continue
-        flower[2] += stock_update
-        flower[3] = price_update
-        savefile()
-        print(f"Flower/leaves {input_name.title()} updated!")
+            flower[2] += stock_update
+            flower[3] = price_update
+            savefile()
+            print(f"Flower/leaves {input_name.title()} updated!")
 
 # Function to add new item           
 def new_flower(input_name):
