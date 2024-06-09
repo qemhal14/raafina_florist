@@ -346,8 +346,9 @@ def update_stock(cart):
 
 # main program in order options
 def order():
-    total_invent()
+    total_invent()  
     cart = [["Item", "Quantity", "Price"]]
+
     while True:
         table()
         try:
@@ -355,10 +356,12 @@ def order():
             if input_buy < 0 or input_buy > total_invent():
                 error_message()
                 continue
+
             item_ordered = table_flower[input_buy]
             flower = item_ordered[0]
             stock = item_ordered[2]
             price = item_ordered[3]
+
         except ValueError:
             error_message()
             continue
@@ -372,23 +375,23 @@ def order():
         while True:
             try:
                 input_qty = int(input("Enter quantity: "))
-                if input_qty <= stock and existing_index is not None:
-                    cart[existing_index][1] += input_qty
+                if input_qty <= stock:
+                    if existing_index is not None:
+                        cart[existing_index][1] += input_qty  # Update quantity
+                        cart[existing_index][2] += input_qty * price  # Update price
+                    else:
+                        cart.append([flower, input_qty, input_qty * price])
                     break
-                elif input_qty <= stock:
-                    break
-                print(f"{flower} stock is not enough! Stock remaining: {stock}.")
+                else:
+                    print(f"{flower} stock is not enough! Stock remaining: {stock}.")
             except ValueError:
                 error_message()
                 continue
-        subtotal_price = input_qty * price
-        cart_update = [flower, input_qty, subtotal_price]
-        if existing_index is None:
-            cart.append(cart_update)
+
         print(tabulate(cart))
 
         add_another = user_inp("Do you like to add another flower/leaves? (yes/no): ", ["yes", "no"]).lower()
-        if add_another == "no":
+        if add_another == "no":             
             product_choice()
             product_name = get_product_name()
             prod_price = product_price(product_name)
